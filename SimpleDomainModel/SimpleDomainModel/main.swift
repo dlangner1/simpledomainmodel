@@ -24,16 +24,56 @@ open class TestMe {
 // Money
 //
 public struct Money {
-  public var amount : Int
-  public var currency : String
-  
-  public func convert(_ to: String) -> Money {
-  }
-  
-  public func add(_ to: Money) -> Money {
-  }
-  public func subtract(_ from: Money) -> Money {
-  }
+    public var amount : Int
+    public var currency : String
+    
+    public func convert(_ to: String) -> Money {
+        if self.currency == to {
+            return self
+        }
+        
+        if self.currency == "USD" {
+            return convertUSD(to: to)
+        } else {
+            return convertToUSD(from: self.currency)
+        }
+    }
+    
+    public func add(_ to: Money) -> Money {
+        let converted = self.convert(to.currency)
+        return Money(amount: converted.amount + to.amount, currency: to.currency)
+    }
+    public func subtract(_ from: Money) -> Money {
+        let converted = self.convert(from.currency)
+        return Money(amount: from.amount - converted.amount, currency: from.currency)
+    }
+    
+    private func convertUSD(to: String) -> Money {
+        switch to {
+        case "GBP":
+            return Money(amount: self.amount / 2, currency: "GBP")
+        case "EUR":
+            let newAmount = self.amount + self.amount / 2
+            return Money(amount: newAmount, currency: "EUR")
+        default: // CAN
+            let newAmount = self.amount + self.amount / 4
+            return Money(amount: newAmount, currency: "CAN")
+        }
+    }
+    
+    private func convertToUSD(from: String) -> Money {
+        var amount = 0
+        switch from {
+        case "GBP":
+            amount = self.amount * 2
+        case "EUR":
+            amount = self.amount - (self.amount / 3)
+        default: // CAN
+            amount = self.amount - (self.amount / 5)
+        }
+        return Money(amount: amount, currency: "USD")
+    }
+    
 }
 
 ////////////////////////////////////
