@@ -80,22 +80,36 @@ public struct Money {
 // Job
 //
 open class Job {
-  fileprivate var title : String
-  fileprivate var type : JobType
-
-  public enum JobType {
-    case Hourly(Double)
-    case Salary(Int)
-  }
-  
-  public init(title : String, type : JobType) {
-  }
-  
-  open func calculateIncome(_ hours: Int) -> Int {
-  }
-  
-  open func raise(_ amt : Double) {
-  }
+    fileprivate var title : String
+    fileprivate var type : JobType
+    
+    public enum JobType {
+        case Hourly(Double)
+        case Salary(Int)
+    }
+    
+    public init(title : String, type : JobType) {
+        self.title = title
+        self.type = type
+    }
+    
+    open func calculateIncome(_ hours: Int) -> Int {
+        switch self.type {
+        case .Hourly(let amount):
+            return Int(amount) * hours
+        case .Salary(let amount):
+            return amount
+        }
+    }
+    
+    open func raise(_ amt : Double) {
+        switch self.type {
+        case .Hourly(let amount):
+            self.type = .Hourly(amount + amt)
+        case .Salary(let amount):
+            self.type = .Salary(amount + Int(amt))
+        }
+    }
 }
 
 ////////////////////////////////////
