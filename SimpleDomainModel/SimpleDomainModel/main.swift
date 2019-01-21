@@ -116,32 +116,43 @@ open class Job {
 // Person
 //
 open class Person {
-  open var firstName : String = ""
-  open var lastName : String = ""
-  open var age : Int = 0
-
-  fileprivate var _job : Job? = nil
-  open var job : Job? {
-    get { }
-    set(value) {
+    open var firstName : String = ""
+    open var lastName : String = ""
+    open var age : Int = 0
+    
+    fileprivate var _job : Job? = nil
+    open var job : Job? {
+        get {
+            return _job
+        }
+        set(value) {
+            if self.age > 15 {
+                _job = value
+            }
+        }
     }
-  }
-  
-  fileprivate var _spouse : Person? = nil
-  open var spouse : Person? {
-    get { }
-    set(value) {
+    
+    fileprivate var _spouse : Person? = nil
+    open var spouse : Person? {
+        get {
+            return _spouse
+        }
+        set(value) {
+            if self.age > 17 {
+                _spouse = value
+            }
+        }
     }
-  }
-  
-  public init(firstName : String, lastName: String, age : Int) {
-    self.firstName = firstName
-    self.lastName = lastName
-    self.age = age
-  }
-  
-  open func toString() -> String {
-  }
+    
+    public init(firstName : String, lastName: String, age : Int) {
+        self.firstName = firstName
+        self.lastName = lastName
+        self.age = age
+    }
+    
+    open func toString() -> String {
+        return "[Person: firstName:\(self.firstName) lastName:\(self.lastName) age:\(self.age) job:\(String(describing: self.job)) spouse:\(String(describing: self.spouse))]"
+    }
 }
 
 ////////////////////////////////////
